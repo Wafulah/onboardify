@@ -1,0 +1,11 @@
+import { auth } from "@/auth/auth.node";
+
+export const currentUser = async () => {
+  const session = await auth(); // works in server components (reads cookies)
+  return session?.user;
+};
+
+export const currentRole = async () => {
+  const session = await auth();
+  return session?.user?.role;
+};

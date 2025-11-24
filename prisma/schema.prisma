@@ -1,0 +1,185 @@
+
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+ 
+}
+
+enum UserRole {
+  ADMIN
+  BUYER
+  SALES
+  BOM
+  BM
+  OPERATIONS_OFFICER
+}
+
+enum Allowed {
+  YES
+  NO
+}
+
+enum AccountStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+  FLAGGED
+}
+
+model User {
+  id                    String                 @id @default(cuid())
+  name                  String?
+  email                 String?                @unique
+  emailVerified         DateTime?
+  image                 String?
+  password              String?                // hashed
+  role                  UserRole               
+  allowed               Allowed                @default(YES)
+  dsaCode               String?                @db.VarChar(4)
+  isTwoFactorEnabled    Boolean                @default(false)
+  twoFactorConfirmation TwoFactorConfirmation?
+
+  // NextAuth relations
+  accounts              Account[]
+  sessions              Session[]
+
+  // Domain relations
+  customersCreated      Customer[]             @relation("createdBy")
+  auditLogs             AuditLog[]             @relation("actor")
+
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+}
+
+model Account {
+  id                 String    @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?   @db.Text
+  access_token       String?   @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?   @db.Text
+  session_state      String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model TwoFactorConfirmation {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId])
+}
+
+model Customer {
+  id           String        @id @default(cuid())
+  firstName    String
+  middleName   String?
+  lastName     String
+  email        String        @unique
+  phone        String
+  nationalId   String       @unique
+  address      String?
+  nationality  String
+  businessName String?
+  businessType String?
+  flagged      Boolean       @default(false)
+  flagReason   String?
+
+  
+  // The main customer photo
+  profileImageId  String
+  
+  // ID Front Page Image
+  idFrontImageId  String
+  // ID Back Page Image
+  idBackImageId   String
+  
+
+  status       AccountStatus @default(PENDING)
+
+  createdById  String
+  createdBy    User          @relation("createdBy", fields: [createdById], references: [id], onDelete: Cascade)
+
+  auditLogs    AuditLog[]    @relation("target")
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Image {
+  id          String    @id @default(cuid()) @unique // Changed to cuid() for consistency
+  url         String
+  altText     String?
+  width       Int?
+  height      Int?
+  
+ 
+  customer    Customer? @relation("CustomerImages", fields: [customerId], references: [id])
+  customerId  String?
+}
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String
+  actor     User     @relation("actor", fields: [userId], references: [id], onDelete: Cascade)
+  action    String
+  entity    String
+  entityId  String
+  note      String?
+  createdAt DateTime @default(now())
+
+  // relation back to target entity (Customer)
+  target    Customer? @relation("target", fields: [entityId], references: [id], onDelete: Cascade)
+}
