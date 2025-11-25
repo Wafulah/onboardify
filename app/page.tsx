@@ -31,7 +31,7 @@ export default async function Home() {
     }
 
     const keyMetrics = [
-        { label: "New Cases (Last 24h)", value: "18", icon: UserPlus, color: "text-blue-600", bg: "bg-blue-100" },
+        { label: "New Customers (Last 24h)", value: "18", icon: UserPlus, color: "text-blue-600", bg: "bg-blue-100" },
         { label: "Pending Approvals", value: "3", icon: ListChecks, color: "text-amber-600", bg: "bg-amber-100" },
         { label: "High Risk Flags", value: "1", icon: AlertTriangle, color: "text-red-600", bg: "bg-red-100" },
         { label: "Total Customers", value: "8,452", icon: Users, color: "text-green-600", bg: "bg-green-100" },
@@ -79,7 +79,7 @@ export default async function Home() {
                 <h2 className="text-xl font-semibold text-gray-700 dark:text-gray-200 mb-4">Required Actions</h2>
                 <div className="flex flex-col sm:flex-row gap-4">
                     <Button 
-                        href="/dashboard/onboard" 
+                        href="/onboard" 
                         variant="primary" 
                         className="w-full sm:w-auto"
                         title="Onboard User"
@@ -88,7 +88,7 @@ export default async function Home() {
                         Onboard New User
                     </Button>
                     <Button 
-                        href="/dashboard/customers" 
+                        href="/customers" 
                         variant="outline" 
                         className="w-full sm:w-auto"
                         title="View Customers"

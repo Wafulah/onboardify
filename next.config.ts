@@ -1,7 +1,17 @@
-import type { NextConfig } from "next";
+/** @type {import('next').NextConfig} */
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+const nextConfig = {
+     experimental: {
+    ppr: true,
+    inlineCss: true,
+    useCache: true
+  },
+    images: {
+        domains : [
+            "res.cloudinary.com",
+            "lh3.googleusercontent.com"
+        ]
+    }
+}
 
-export default nextConfig;
+module.exports = nextConfig

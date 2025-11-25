@@ -1,4 +1,3 @@
-// lib/validation/customer-schema.ts
 import * as z from "zod";
 
 // --- Custom Zod Schemas for each step ---

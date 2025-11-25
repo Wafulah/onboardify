@@ -1,4 +1,3 @@
-// app/dashboard/onboard/page.tsx or components/CreateCustomerForm.tsx
 "use client";
 
 import { useState } from "react";
@@ -100,6 +99,8 @@ const CreateCustomerForm = () => {
                 idFrontImageUrl: data.idFrontImageUrl[0],
                 idBackImageUrl: data.idBackImageUrl[0],
             };
+
+            console.log("payload", payload);
 
             
             const response = await fetch("/api/onboard", {
@@ -298,7 +299,7 @@ const CreateCustomerForm = () => {
           name="address"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Physical Address (Optional)</FormLabel>
+              <FormLabel>Physical Address</FormLabel>
               <FormControl><Textarea placeholder="123 Main Street" {...field} /></FormControl>
               <FormMessage />
             </FormItem>
