@@ -1,4 +1,4 @@
-"use state"
+"use client"
 
 import { serverSignIn } from "@/actions/auth";
 import { useSearchParams } from 'next/navigation';
