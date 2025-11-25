@@ -28,13 +28,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 
-interface DataTableProps<TData extends Record<string, any>, TValue> {
+interface DataTableProps<TData extends Record<string, unknown>, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
     searchKey: string;
 }
 
-export function DataTable<TData extends Record<string, any>, TValue>({
+export function DataTable<TData extends Record<string, unknown>, TValue>({
     columns,
     data,
     searchKey,
