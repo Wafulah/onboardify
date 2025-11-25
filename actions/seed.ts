@@ -23,7 +23,7 @@ const users: SeedUser[] = [
     emailVerified: "2025-11-20 11:05:37.514",
     image:
       "https://lh3.googleusercontent.com/a/ACg8ocK7r3TTMaz4-5T4Oeq1SI5vh_XpTD7uPLZx9cNnKk6XJfucvQ=s96-c",
-    password: null,
+    password: "123456!",
     role: "ADMIN",
     allowed: "YES",
     isTwoFactorEnabled: false,
