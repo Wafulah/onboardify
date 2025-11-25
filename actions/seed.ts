@@ -1,5 +1,6 @@
 import { UserRole, Allowed } from "@/lib/generated/prisma/client";
 import prisma from "@/lib/prisma";
+import bcrypt from "bcryptjs";
 
 type SeedUser = {
   id: string;
@@ -44,6 +45,11 @@ export async function seedData() { // Renamed and exported as seedData
     console.log("DB connected.");
 
     for (const u of users) {
+      let hashedPassword = u.password;
+      if (u.password) {
+          // Hash the password with a salt round of 10
+          hashedPassword = await bcrypt.hash(u.password, 10);
+      }
       const emailVerified = u.emailVerified ? new Date(u.emailVerified) : null;
       const createdAt = u.createdAt ? new Date(u.createdAt) : undefined;
       const updatedAt = u.updatedAt ? new Date(u.updatedAt) : undefined;
@@ -56,7 +62,7 @@ export async function seedData() { // Renamed and exported as seedData
             name: u.name,
             emailVerified,
             image: u.image,
-            password: u.password,
+            password: hashedPassword,
             role: u.role,
             allowed: u.allowed,
             isTwoFactorEnabled: u.isTwoFactorEnabled,
@@ -68,7 +74,7 @@ export async function seedData() { // Renamed and exported as seedData
             email: u.email,
             emailVerified,
             image: u.image,
-            password: u.password,
+            password: hashedPassword,
             role: u.role,
             allowed: u.allowed,
             isTwoFactorEnabled: u.isTwoFactorEnabled,

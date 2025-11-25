@@ -99,7 +99,7 @@ export default function LoginClient() {
           <button
             type="submit"
             disabled={status === 'loading'}
-            className="w-full py-3 text-blue-800 text-slate-text font-bold text-lg uppercase tracking-wider rounded-lg shadow-md hover:bg-teal-400 hover:text-white focus:outline-none focus:ring-4 focus:ring-cyan-primary focus:ring-opacity-50 transition duration-200"
+            className="w-full py-3 bg-blue-800 text-slate-text font-bold text-lg uppercase tracking-wider rounded-lg shadow-md hover:bg-teal-400 hover:text-white focus:outline-none focus:ring-4 focus:ring-cyan-primary focus:ring-opacity-50 transition duration-200"
           >
             Log In
           </button>
