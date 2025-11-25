@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { CustomerOnboardingSchema } from "@/schemas"; 
+import { CustomerOnboardingAPISchema } from "@/schemas";
 import { currentUser } from "@/lib/auth";
 import { Prisma } from "@/lib/generated/prisma/client";
 
@@ -14,8 +14,7 @@ export async function POST(req: NextRequest) {
     try {
          const user = await currentUser();
    
-  
-    
+   
     if (!user) {
      
       return NextResponse.redirect(new URL("/login", req.url));

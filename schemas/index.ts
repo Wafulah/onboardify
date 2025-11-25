@@ -35,3 +35,10 @@ export const StepFourSchema = z.object({
 export const CustomerOnboardingSchema = StepOneSchema.and(StepTwoSchema).and(StepThreeSchema).and(StepFourSchema);
 
 export type CustomerOnboardingFormValues = z.infer<typeof CustomerOnboardingSchema>;
+
+export const CustomerOnboardingAPISchema = CustomerOnboardingFormSchema.extend({
+    // Override the array types with string types
+    idFrontImageUrl: z.string().url("Invalid ID Front URL.").min(1, "Front ID photo is required."), 
+    idBackImageUrl: z.string().url("Invalid ID Back URL.").min(1, "Back ID photo is required."),   
+    profileImageUrl: z.string().url("Invalid Profile URL.").min(1, "Customer profile photo is required."), 
+});
