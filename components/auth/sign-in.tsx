@@ -1,3 +1,5 @@
+"use state"
+
 import { serverSignIn } from "@/actions/auth";
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
