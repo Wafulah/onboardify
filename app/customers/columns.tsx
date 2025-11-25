@@ -12,8 +12,16 @@ import {
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, Eye, MoreHorizontal, User, CheckCircle, XCircle, Clock } from "lucide-react";
 import Link from "next/link";
-import { AccountStatus } from "@/lib/generated/prisma/client"; 
+
 import { cn } from "@/lib/utils"
+const AccountStatus = {
+  PENDING: "PENDING",
+  VERIFIED: "VERIFIED",
+  REJECTED: "REJECTED",
+  FLAGGED: "FLAGGED",
+} as const;
+
+type AccountStatusValues= typeof AccountStatus[keyof typeof AccountStatus];
 
 export type CustomerColumn = {
   id: string;
@@ -21,7 +29,7 @@ export type CustomerColumn = {
   nationalId: string;
   phone: string;
   email: string;
-  status: AccountStatus; 
+  status: AccountStatusValues; 
   createdBy: string; 
   createdAt: string; 
 };
