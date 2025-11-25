@@ -3,7 +3,7 @@ import React from 'react';
 import { UserPlus, Users, AlertTriangle, ListChecks } from 'lucide-react';
 import { currentUser } from "@/lib/auth";
 import { redirect } from 'next/navigation';
-import { seedData } from '@/actions/seed';
+
 
 
 
@@ -23,8 +23,7 @@ const Button: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement> & { asChild
 
 
 export default async function Home() {
-    const seed = seedData();
-    
+       
     const user = await currentUser(); 
     
     if (!user) {
