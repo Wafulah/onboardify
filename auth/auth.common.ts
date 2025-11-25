@@ -10,13 +10,25 @@ const authCommon: NextAuthConfig = {
   },
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
-      const isLoggedIn = !!auth;
-      const isAdminRoute = nextUrl.pathname.startsWith("/");
+      const pathname = nextUrl.pathname;
 
-      if (isAdminRoute && isLoggedIn) return true;
-      if (!isLoggedIn && isAdminRoute) {
+      
+      if (
+        pathname === "/login" ||
+        pathname === "/error" ||
+        pathname.startsWith("/api") ||
+        pathname.startsWith("/_next") ||
+        pathname === "/favicon.ico"
+      ) {
+        return true;
+      }
+
+      const isLoggedIn = !!auth;
+      // Protect everything else under root if not logged in
+      if (!isLoggedIn) {
         return Response.redirect(new URL("/login", nextUrl));
       }
+
       return true;
     },
   },
