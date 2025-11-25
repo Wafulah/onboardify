@@ -1,21 +1,9 @@
 import React from 'react';
 
 import { UserPlus, Users, AlertTriangle, ListChecks } from 'lucide-react';
+import { currentUser } from "@/lib/auth";
+import { redirect } from 'next/navigation';
 
-
-interface User {
-    name: string;
-    role: string;
-}
-
-const currentUser = async (): Promise<User> => {
-    
-    await new Promise(resolve => setTimeout(resolve, 100));
-    return {
-        name: "Amina Mohammed",
-        role: "Compliance Officer",
-    };
-};
 
 
 const Button: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement> & { asChild?: boolean, variant?: 'primary' | 'outline' }> = ({ children, className, variant = 'primary', ...props }) => {
@@ -31,10 +19,14 @@ const Button: React.FC<React.AnchorHTMLAttributes<HTMLAnchorElement> & { asChild
 };
 
 
-// --- Main Server Component Dashboard ---
+
 
 export default async function Home() {
-    const user = await currentUser(); // Simulated data fetch
+    const user = await currentUser(); 
+    
+    if (!user) {
+      redirect("/login"); 
+    }
 
     const keyMetrics = [
         { label: "New Cases (Last 24h)", value: "18", icon: UserPlus, color: "text-blue-600", bg: "bg-blue-100" },
