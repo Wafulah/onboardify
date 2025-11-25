@@ -89,32 +89,49 @@ const CreateCustomerForm = () => {
   };
 
   const onSubmit = async (data: CustomerOnboardingFormValues) => {
-    setIsLoading(true);
-    // ⚠️ TODO: Call your backend API endpoint (e.g., POST /api/customers/onboard)
-    try {
-      console.log("Submitting Customer Data:", data);
-      
-      // NOTE: You must normalize the image URLs to be strings on submission
-      const payload = {
-          ...data,
-          profileImageUrl: data.profileImageUrl[0], // Extract single URL
-          idFrontImageUrl: data.idFrontImageUrl[0],
-          idBackImageUrl: data.idBackImageUrl[0],
-      }
-      
-      // Example API call:
-      // await axios.post("/api/customers/onboard", payload);
-      
-      form.reset();
-      setCurrentStep(1);
-      // alert("Customer Onboarding Successful!");
-    } catch (error) {
-      console.error("Submission failed:", error);
-      // alert("Submission failed. Check console for details.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        setIsLoading(true);
+        try {
+            console.log("Submitting Customer Data:", data);
+
+            // 1. Normalize image URLs (as defined by your logic)
+            const payload = {
+                ...data,
+                profileImageUrl: data.profileImageUrl[0], // Extract single URL
+                idFrontImageUrl: data.idFrontImageUrl[0],
+                idBackImageUrl: data.idBackImageUrl[0],
+            };
+
+            
+            const response = await fetch("/api/onboard", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(payload),
+            });
+            
+           
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("API Error Response:", errorData);
+                
+                throw new Error(errorData.message || "Failed to onboard customer.");
+            }
+
+            
+            form.reset();
+            setCurrentStep(1);
+            alert("Customer Onboarding Successful!"); 
+
+        } catch (error) {
+            // Display specific error message if available
+            const errorMessage = error instanceof Error ? error.message : "Submission failed. Check console for details.";
+            console.error("Submission failed:", error);
+            alert(errorMessage);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
   // --- Step Rendering Functions ---
 
