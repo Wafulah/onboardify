@@ -1,14 +1,13 @@
-'use client';
-
-import { signIn } from '@/auth';
+import { serverSignIn } from "@/actions/auth";
 import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import Link from 'next/link';
+
 
 export default function LoginClient() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<'idle' | 'loading'>('idle');
 
   const searchParams = useSearchParams();
   const authError = searchParams.get('error');
@@ -17,17 +16,37 @@ export default function LoginClient() {
     e.preventDefault();
     setError(null);
 
-    const result = await signIn('credentials', {
-      email,
-      password,
-      redirect: false,
-    });
+    
+    if (!email || !password) {
+      setError("Please enter both email and password.");
+      return;
+    }
+    
+    setStatus('loading'); 
 
-    if (result?.error) {
-      setError('Invalid email or password. Please check your credentials.');
-    } else {
-      const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
-      window.location.href = callbackUrl;
+    try {
+     
+      const result = await serverSignIn('credentials', {
+        email,
+        password,
+        redirect: false,
+      });
+
+      
+      if (result?.error) {
+        setError('Invalid email or password. Please check your credentials.');
+      } else {
+        
+        const callbackUrl = searchParams.get('callbackUrl') || '/';
+        window.location.href = callbackUrl;
+        
+      }
+    } catch (err) {
+      console.error("Credentials sign in error:", err);
+      
+      setError("Login failed due to a server error. Please try again.");
+    } finally {
+      setStatus('idle'); 
     }
   };
 
@@ -77,18 +96,14 @@ export default function LoginClient() {
 
           <button
             type="submit"
-            className="w-full py-3 bg-cyan-600 text-slate-text font-bold text-lg uppercase tracking-wider rounded-lg shadow-md hover:bg-teal-400 hover:text-white focus:outline-none focus:ring-4 focus:ring-cyan-primary focus:ring-opacity-50 transition duration-200"
+            disabled={status === 'loading'}
+            className="w-full py-3 text-blue-800 text-slate-text font-bold text-lg uppercase tracking-wider rounded-lg shadow-md hover:bg-teal-400 hover:text-white focus:outline-none focus:ring-4 focus:ring-cyan-primary focus:ring-opacity-50 transition duration-200"
           >
             Log In
           </button>
         </form>
 
-        <p className="mt-8 text-center text-sm text-gray-500">
-          New user?
-          <Link href="/signup" className="text-teal-accent font-semibold ml-1 hover:underline transition duration-150">
-            Create an Account
-          </Link>
-        </p>
+        
       </div>
     </div>
   );
