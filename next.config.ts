@@ -2,7 +2,6 @@
 
 const nextConfig = {
      experimental: {
-    ppr: true,
     inlineCss: true,
     useCache: true
   },
