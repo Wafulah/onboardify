@@ -1,7 +1,12 @@
 
+import { Suspense } from 'react';
 import LoginClient from "@/components/auth/sign-in";
 
 
 export default function Page() {
-  return <LoginClient />;
+  return (
+    <Suspense fallback={<div>Loading...</div>}> 
+      <LoginClient />
+    </Suspense>
+  );
 }
