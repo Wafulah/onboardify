@@ -147,6 +147,7 @@ model Customer {
   // ID Back Page Image
   idBackImageId   String
   
+  images Image[] @relation("CustomerImages")
 
   status       AccountStatus @default(PENDING)
 

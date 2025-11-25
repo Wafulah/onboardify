@@ -15,7 +15,6 @@ export const StepOneSchema = z.object({
 // Step 2 & 3: ID & Document Uploads
 export const StepTwoSchema = z.object({
   nationalId: z.string().min(6, "National ID must be at least 6 characters."),
-  // The ImageUpload component returns an array of URLs. We expect exactly one for each.
   idFrontImageUrl: z.array(z.string()).length(1, "Front ID photo is required."),
   idBackImageUrl: z.array(z.string()).length(1, "Back ID photo is required."),
 });

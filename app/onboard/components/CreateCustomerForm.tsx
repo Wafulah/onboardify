@@ -6,7 +6,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-// --- Import Components ---
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
@@ -24,7 +23,7 @@ import {
 import ImageUpload from "@/components/image-upload"; 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; 
 
-// --- Import Schemas & Types ---
+
 import { 
   CustomerOnboardingFormValues, 
   CustomerOnboardingSchema, 
@@ -34,7 +33,7 @@ import {
   StepFourSchema 
 } from "@/schemas"; 
 
-// --- Configuration ---
+
 const MAX_STEPS = 4; // Step 1, 2/3, 4, 5
 
 type CurrentSchema = 
@@ -43,7 +42,7 @@ type CurrentSchema =
   | typeof StepThreeSchema 
   | typeof StepFourSchema;
 
-// Helper function to get the schema for the current step
+
 const getSchema = (step: number): CurrentSchema => {
   switch (step) {
     case 1: return StepOneSchema;
@@ -58,7 +57,7 @@ const CreateCustomerForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<CustomerOnboardingFormValues>({
-    resolver: zodResolver(CustomerOnboardingSchema), // Use the full schema for types/defaults
+    resolver: zodResolver(CustomerOnboardingSchema), 
     defaultValues: {
       firstName: "",
       lastName: "",
