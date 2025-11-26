@@ -127,7 +127,7 @@ const CreateCustomerForm = () => {
              
             if (customerId) {
                 
-                router.push(`/verify-customer/${customerId}`); 
+                router.push(`/onboard/verify-customer/${customerId}`); 
             } else {
                 // Fallback if ID is missing (should not happen if backend is correct)
                 throw new Error("Customer onboarded successfully, but missing customer ID for verification redirect.");

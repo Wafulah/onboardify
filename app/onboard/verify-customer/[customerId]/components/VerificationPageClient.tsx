@@ -16,7 +16,7 @@ export default function VerificationPageClient({ customerId, customerName, custo
 
   const handleVerificationSuccess = (status: AccountStatus | string) => {
    
-    router.push(`/onboarding/verify-customer/${customerId}/success?status=${encodeURIComponent(String(status))}`);
+    router.push(`/onboard/verify-customer/${customerId}/success?status=${encodeURIComponent(String(status))}`);
   };
 
   const handleBack = () => {
