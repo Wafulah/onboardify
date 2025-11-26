@@ -129,6 +129,11 @@ model Customer {
   middleName   String?
   lastName     String
   email        String        @unique
+  emailVerified      Boolean  @default(false)
+  emailOtpHash       String?
+  emailOtpExpiry     DateTime?
+  emailOtpAttempts   Int      @default(0)
+
   phone        String
   nationalId   String       @unique
   address      String?
@@ -150,6 +155,12 @@ model Customer {
   images Image[] @relation("CustomerImages")
 
   status       AccountStatus @default(PENDING)
+
+  kycStatus          String   @default("not_started") 
+  verificationStatus String   @default("pending")   
+
+  ocrExtractedName   String?
+  ocrExtractedId     String?
 
   createdById  String
   createdBy    User          @relation("createdBy", fields: [createdById], references: [id], onDelete: Cascade)

@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from 'next/navigation';
 
 import {
   Form,
@@ -53,8 +54,11 @@ const getSchema = (step: number): CurrentSchema => {
 };
 
 const CreateCustomerForm = () => {
+  const router = useRouter();
+
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm<CustomerOnboardingFormValues>({
     resolver: zodResolver(CustomerOnboardingSchema), 
     defaultValues: {
@@ -117,7 +121,17 @@ const CreateCustomerForm = () => {
                 
                 throw new Error(errorData.message || "Failed to onboard customer.");
             }
+            const responseData = await response.json();
 
+            const customerId = responseData.customerId;
+             
+            if (customerId) {
+                
+                router.push(`/verify-customer/${customerId}`); 
+            } else {
+                // Fallback if ID is missing (should not happen if backend is correct)
+                throw new Error("Customer onboarded successfully, but missing customer ID for verification redirect.");
+            }
             
             form.reset();
             setCurrentStep(1);
