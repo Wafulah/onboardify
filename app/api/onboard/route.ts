@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
 
         // 1. Validate the incoming body against the Zod schema
-        const validationResult = CustomerOnboardingSchema.safeParse(body);
+        const validationResult = CustomerOnboardingAPISchema.safeParse(body);
         
         if (!validationResult.success) {
             return NextResponse.json({ 
