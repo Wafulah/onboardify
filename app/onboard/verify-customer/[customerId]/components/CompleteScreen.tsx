@@ -19,7 +19,7 @@ const CompleteScreen: React.FC<CompleteScreenProps> = ({ customerName, finalStat
                 <span className="font-bold text-green-600">{finalStatus}</span>.
             </p>
             <Link
-                href="/onboarding"
+                href="/onboard"
                 className="inline-block font-medium text-blue-600 hover:text-blue-500 transition duration-150"
             >
                 Start New Onboarding
