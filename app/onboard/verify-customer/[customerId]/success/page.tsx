@@ -7,14 +7,14 @@ import CompleteScreen from "../components/CompleteScreen";
 import prisma from "@/lib/prisma";
 
 type Props = {
-  params: { customerId: string };
+  params:  Promise<{ customerId: string }>;
   searchParams?: { [key: string]: string | string[] | undefined };
 };
 
 
 
 export default async function SuccessPage({ params, searchParams }: Props) {
-  const { customerId } = params;
+  const { customerId } = await params;
   const statusParam = Array.isArray(searchParams?.status) ? searchParams?.status[0] : searchParams?.status;
 
   const customer = await prisma.customer.findUnique({

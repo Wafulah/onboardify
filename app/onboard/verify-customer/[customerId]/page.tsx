@@ -7,12 +7,12 @@ import prisma from "@/lib/prisma";
 import VerificationPageClient from "./components/VerificationPageClient";
 
 type Props = {
-  params: { customerId: string };
+  params:  Promise<{ customerId: string }>;
 };
 
 
 export default async function VerificationPage({ params }: Props) {
-  const { customerId } = params;
+  const { customerId } = await params;
 
   const customer = await prisma.customer.findUnique({
     where: { id: customerId },
