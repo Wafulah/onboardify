@@ -1,6 +1,7 @@
 import React from "react";
-import dynamic from "next/dynamic";
+
 import { notFound } from "next/navigation";
+import CompleteScreen from "../components/CompleteScreen";
 
 
 import prisma from "@/lib/prisma";
@@ -10,7 +11,7 @@ type Props = {
   searchParams?: { [key: string]: string | string[] | undefined };
 };
 
-const SuccessClient = dynamic(() => import("../components/CompleteScreen"), { ssr: false });
+
 
 export default async function SuccessPage({ params, searchParams }: Props) {
   const { customerId } = params;
@@ -28,7 +29,7 @@ export default async function SuccessPage({ params, searchParams }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 font-sans">
-      <SuccessClient customerName={customerName} finalStatus={String(finalStatus)} />
+      <CompleteScreen customerName={customerName} finalStatus={String(finalStatus)} />
     </div>
   );
 }
