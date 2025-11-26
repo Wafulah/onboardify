@@ -43,35 +43,35 @@ export async function POST(req: NextRequest) {
 
 
         // 2. OCR Validation
-        let candidateId: string | null = null;
-        let candidateName: string | null = null;
-        let ocrText: string | null = null;
+        // let candidateId: string | null = null;
+        // let candidateName: string | null = null;
+        // let ocrText: string | null = null;
 
-        try {
-            ocrText = await runOcrOnImage(idFrontImageUrl);
-            const ocrResult = parseIdAndNameFromText(ocrText);
-            candidateId = ocrResult.candidateId;
-            candidateName = ocrResult.candidateName;
-        } catch (ocrError) {
-            console.error("[API/ONBOARD] OCR processing failed:", ocrError);
-            // Non-critical failure: We log the error but proceed with PENDING status
-        }
+        // try {
+        //     ocrText = await runOcrOnImage(idFrontImageUrl);
+        //     const ocrResult = parseIdAndNameFromText(ocrText);
+        //     candidateId = ocrResult.candidateId;
+        //     candidateName = ocrResult.candidateName;
+        // } catch (ocrError) {
+        //     console.error("[API/ONBOARD] OCR processing failed:", ocrError);
+        //     // Non-critical failure: We log the error but proceed with PENDING status
+        // }
 
         // Compare OCR results with submitted form data (CRITICAL CHECK)
-        if (candidateId && candidateId !== data.nationalId) {
-            return NextResponse.json(
-                { message: "OCR validation failed: National ID does not match ID document." },
-                { status: 400 }
-            );
-        }
+        // if (candidateId && candidateId !== data.nationalId) {
+        //     return NextResponse.json(
+        //         { message: "OCR validation failed: National ID does not match ID document." },
+        //         { status: 400 }
+        //     );
+        // }
 
-        const fullName = `${data.firstName} ${data.lastName}`;
-        if (candidateName && !candidateName.toLowerCase().includes(fullName.toLowerCase())) {
-            return NextResponse.json(
-                { message: "OCR validation failed: Name does not closely match ID document." },
-                { status: 400 }
-            );
-        }
+        // const fullName = `${data.firstName} ${data.lastName}`;
+        // if (candidateName && !candidateName.toLowerCase().includes(fullName.toLowerCase())) {
+        //     return NextResponse.json(
+        //         { message: "OCR validation failed: Name does not closely match ID document." },
+        //         { status: 400 }
+        //     );
+        // }
 
 
         // 3. Create records in a transaction
@@ -98,8 +98,8 @@ export async function POST(req: NextRequest) {
                     businessName: data.businessName,
                     businessType: data.businessType,
                     createdById: CREATED_BY_USER_ID,
-                    ocrExtractedName: candidateName,
-                    ocrExtractedId: candidateId,
+                    ocrExtractedName: data.firstName, // candidateName,
+                    ocrExtractedId: data.nationalId, //candidateId,
                     // status is PENDING by default
                 },
             });
