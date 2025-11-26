@@ -1,4 +1,3 @@
-// app/dashboard/onboard/page.tsx
 import CreateCustomerForm from "./components/CreateCustomerForm"; 
 import { Separator } from "@/components/ui/separator";
 

@@ -132,7 +132,7 @@ export const columns: ColumnDef<CustomerColumn>[] = [
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
           <DropdownMenuItem asChild>
             {/* Link to a detail page for viewing and verification */}
-            <Link href={`/dashboard/customers/${row.original.id}`}>
+            <Link href={`/customers/${row.original.id}`}>
                 <Eye className="mr-2 h-4 w-4" /> View Details
             </Link>
           </DropdownMenuItem>

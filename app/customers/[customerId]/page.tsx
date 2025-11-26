@@ -48,7 +48,7 @@ export default async function CustomerPage({ params }: PageProps) {
   return (
     <div className="flex-col">
       <div className="flex-1 space-y-6 p-4 md:p-8 pt-6">
-        {/* Pass the fully loaded customer data to the dedicated form component */}
+        
         <CustomerForm initialData={initialData} />
       </div>
     </div>

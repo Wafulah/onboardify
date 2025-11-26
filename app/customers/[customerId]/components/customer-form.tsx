@@ -118,7 +118,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
       setLoading(true);
       await axios.delete(`/api/admin/customers/${params.customerId}`);
       router.refresh();
-      router.push("/dashboard/admin/customers"); // Redirect to the list view
+      router.push("/customers"); 
       toast.success("Customer record deleted.");
     } catch (error) {
       toast.error("Failed to delete customer record.");

@@ -36,19 +36,14 @@ export async function POST(req: NextRequest) {
 
         const data = validationResult.data;
 
-        // NOTE on Data Normalization:
-        // The form sends single-item arrays for images (e.g., `idFrontImageUrl: ["url"]`).
-        // We normalize them to single string URLs here for use with Prisma.
+        
 
-        const profileImageUrl = data.profileImageUrl[0];
-        const idFrontImageUrl = data.idFrontImageUrl[0];
-        const idBackImageUrl = data.idBackImageUrl[0];
+        const profileImageUrl = data.profileImageUrl;
+        const idFrontImageUrl = data.idFrontImageUrl;
+        const idBackImageUrl = data.idBackImageUrl;
 
 
-        // 2. Multi-step creation in Prisma: Create Images first, then the Customer
-
-        // 2a. Check if the creator user exists (required by Prisma schema)
-        // In a real app, this check might be implicit via middleware.
+        
         const creatorUser = await prisma.user.findUnique({ where: { id: CREATED_BY_USER_ID } });
         if (!creatorUser) {
             return NextResponse.json({ message: "Authenticated user not found." }, { status: 401 });
