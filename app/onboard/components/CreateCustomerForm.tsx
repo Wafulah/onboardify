@@ -92,7 +92,7 @@ const CreateCustomerForm = () => {
         try {
             console.log("Submitting Customer Data:", data);
 
-            // 1. Normalize image URLs (as defined by your logic)
+           
             const payload = {
                 ...data,
                 profileImageUrl: data.profileImageUrl[0], // Extract single URL
@@ -100,7 +100,6 @@ const CreateCustomerForm = () => {
                 idBackImageUrl: data.idBackImageUrl[0],
             };
 
-            console.log("payload", payload);
 
             
             const response = await fetch("/api/onboard", {
