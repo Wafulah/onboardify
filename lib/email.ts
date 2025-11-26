@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
 export async function sendEmailOtp(to: string, otp: string, name?: string) {
   const text = `Hello${name ? " " + name : ""},\n\nYour verification code is: ${otp}\nIt expires in 10 minutes.\n\nIf you did not request this, contact support.`;
   await transporter.sendMail({
-    from: `"No-Reply" <no-reply@yourdomain.com>`, // Update with your actual sender email
+    from: `"No-Reply" <no-reply@yourdomain.com>`, 
     to,
     subject: "Your Customer Verification Code",
     text,

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { verifyEmailOtp } from "@/lib/emailOtp"; 
+import { generateUniqueAccount } from "@/lib/account";
+import { sendAccountMail } from "@/lib/sendAccountMail";
 
 
 interface VerifyOtpBody {
@@ -24,6 +26,9 @@ export async function POST(req: NextRequest) {
         // 1. Fetch customer data
         const customer = await prisma.customer.findUnique({
             where: { id: customerId },
+            include: { 
+                bankAccount: true 
+            },
         });
 
         if (!customer) {
@@ -44,17 +49,37 @@ export async function POST(req: NextRequest) {
 
         if (result === "valid") {
             // 4. Update customer status
-            const updatedCustomer = await prisma.customer.update({
-                where: { id: customerId },
-                data: {
-                    status: 'VERIFIED',
-                    emailVerified: true,
-                    // Clear OTP fields after successful verification
-                    emailOtpHash: null,
-                    emailOtpExpiry: null,
-                    emailOtpAttempts: 0,
-                },
-            });
+            const newAccountNumber = await generateUniqueAccount();
+
+            // B. Create the new Bank Account and link it to the customer, and update customer status
+            const [bankAccount, updatedCustomer] = await prisma.$transaction([
+                // Create the Bank Account
+                prisma.bankAccount.create({
+                    data: {
+                        accountNumber: newAccountNumber,
+                        balance: 0,
+                        customerId: customerId,
+                        accountType: 'CURRENT', 
+                    }
+                }),
+                // Update Customer Status
+                prisma.customer.update({
+                    where: { id: customerId },
+                    data: {
+                        status: 'VERIFIED',
+                        emailVerified: true,
+                        
+                        emailOtpHash: null,
+                        emailOtpExpiry: null,
+                        emailOtpAttempts: 0,
+                    },
+                })
+            ]);
+
+            // C. Send the welcome email with the account number
+            await sendAccountMail(customer.email, newAccountNumber, customer.firstName);
+
+            
 
             return NextResponse.json({ 
                 message: "Email verification successful. Account status is now VERIFIED.", 

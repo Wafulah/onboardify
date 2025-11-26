@@ -166,6 +166,7 @@ model Customer {
   createdBy    User          @relation("createdBy", fields: [createdById], references: [id], onDelete: Cascade)
 
   auditLogs    AuditLog[]    @relation("target")
+  bankAccount BankAccount?
 
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
@@ -182,6 +183,18 @@ model Image {
   customer    Customer? @relation("CustomerImages", fields: [customerId], references: [id])
   customerId  String?
 }
+
+model BankAccount {
+  id              String    @id @default(cuid())
+  accountNumber   String    @unique @db.VarChar(9)
+  accountType     String    @default("CURRENT") 
+  customerId      String    @unique 
+  customer        Customer  @relation(fields: [customerId], references: [id])
+  balance         Decimal   @default(0.00) @db.Money 
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
 model AuditLog {
   id        String   @id @default(cuid())
   userId    String
