@@ -6,18 +6,18 @@ import CompleteScreen from "../components/CompleteScreen";
 
 import prisma from "@/lib/prisma";
 
-interface SuccessPageProps {
-  params: {
-    customerId: string;
-  };
- 
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
+type Props = {
+  params:  Promise<{ customerId: string }>;
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+};
 
 
-export default async function SuccessPage({ params, searchParams }: SuccessPageProps) {
-  const { customerId } = params;
-  const statusParam = Array.isArray(searchParams?.status) ? searchParams?.status[0] : searchParams?.status;
+
+export default async function SuccessPage({ params, searchParams }: Props) {
+  const { customerId } = await params;
+  const resolvedSearchParams = searchParams ? await searchParams : {};
+  const statusParam = Array.isArray(resolvedSearchParams?.status) ? resolvedSearchParams?.status[0] : resolvedSearchParams?.status;
+
 
   const customer = await prisma.customer.findUnique({
     where: { id: customerId },
