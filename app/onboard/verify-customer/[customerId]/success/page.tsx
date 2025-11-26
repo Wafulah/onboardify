@@ -6,14 +6,16 @@ import CompleteScreen from "../components/CompleteScreen";
 
 import prisma from "@/lib/prisma";
 
-type Props = {
-  params:  { customerId: string };
+interface SuccessPageProps {
+  params: {
+    customerId: string;
+  };
+ 
   searchParams?: { [key: string]: string | string[] | undefined };
-};
+}
 
 
-
-export default async function SuccessPage({ params, searchParams }: Props) {
+export default async function SuccessPage({ params, searchParams }: SuccessPageProps) {
   const { customerId } = params;
   const statusParam = Array.isArray(searchParams?.status) ? searchParams?.status[0] : searchParams?.status;
 
